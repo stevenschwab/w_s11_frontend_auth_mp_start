@@ -24,26 +24,21 @@ export default function AuthForm() {
   const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    try {
-      if (isLogin) {
-        const { data } = await axios.post(
-          `api/auth/login`,
-          { username, password }
-        )
-        localStorage.setItem('token', data.token)
-        navigate('/stars')
-      } else {
-        const { data } = await axios.post(
-          `api/auth/register`,
-          { username, password }
-        )
-        setMessage(data.message)
+    event.preventDefault();
+    const endpoint = isLogin ? `api/auth/login` : `api/auth/register`;
+    const handleResponse = isLogin
+      ? (data) => {
+        localStorage.setItem('token', data.token);
+        navigate('/stars');
       }
+      : (data) => setMessage(data.message);
+    try {
+      const { data } = await axios.post(endpoint, { username, password });
+      handleResponse(data);
     } catch (error) {
-      setError(error.message)
+      setError(error.message);
     }
-  }
+  };
 
   return (
     <div className="container">
