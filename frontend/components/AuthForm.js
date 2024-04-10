@@ -21,6 +21,30 @@ export default function AuthForm() {
     setPassword(event.target.value)
   }
 
+  const navigate = useNavigate()
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    try {
+      if (isLogin) {
+        const { data } = await axios.post(
+          `api/auth/login`,
+          { username, password }
+        )
+        localStorage.setItem('token', data.token)
+        navigate('/stars')
+      } else {
+        const { data } = await axios.post(
+          `api/auth/register`,
+          { username, password }
+        )
+        setMessage(data.message)
+      }
+    } catch (error) {
+      setError(error.message)
+    }
+  }
+
   return (
     <div className="container">
       <div aria-live="polite">{message}</div>
@@ -30,7 +54,7 @@ export default function AuthForm() {
           Switch to {isLogin ? 'Register' : 'Login'}
         </button>
       </h3>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
           <input
