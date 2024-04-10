@@ -7,7 +7,8 @@ export default function StarsList() {
   const navigate = useNavigate()
 
   const logout = () => {
-    
+    localStorage.removeItem('token');
+    navigate('/')
   }
 
   return (
