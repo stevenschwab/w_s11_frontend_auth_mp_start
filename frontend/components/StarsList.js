@@ -11,6 +11,10 @@ export default function StarsList() {
     navigate('/')
   }
 
+  useEffect(() => {
+    
+  }, [])
+
   return (
     <div className="container">
       <h3>StarsList <button onClick={logout}>Logout</button></h3>
