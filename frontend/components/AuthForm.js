@@ -25,7 +25,7 @@ export default function AuthForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const endpoint = isLogin ? `api/auth/login` : `api/auth/register`;
+    const endpoint = isLogin ? `/api/auth/login` : `/api/auth/register`;
     const handleResponse = isLogin
       ? (data) => {
         localStorage.setItem('token', data.token);
