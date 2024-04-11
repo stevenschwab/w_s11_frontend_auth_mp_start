@@ -9,10 +9,14 @@ export default function AuthForm() {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
 
-  const toggleFormMode = () => {
-    setIsLogin(!isLogin)
+  const clearErrorsAndMessages = () => {
     setError('')
     setMessage('')
+  }
+
+  const toggleFormMode = () => {
+    setIsLogin(!isLogin)
+    clearErrorsAndMessages()
   }
   const handleUsernameChange = (event) => {
     setUsername(event.target.value)
@@ -25,6 +29,7 @@ export default function AuthForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    clearErrorsAndMessages();
     const endpoint = isLogin ? `/api/auth/login` : `/api/auth/register`;
     const handleResponse = isLogin
       ? (data) => {
