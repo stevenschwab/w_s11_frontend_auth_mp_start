@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 export default function AuthForm() {
+  const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -25,23 +26,23 @@ export default function AuthForm() {
     setPassword(event.target.value)
   }
 
-  const navigate = useNavigate()
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     clearErrorsAndMessages();
-    const endpoint = isLogin ? `/api/auth/login` : `/api/auth/register`;
-    const handleResponse = isLogin
-      ? (data) => {
-        localStorage.setItem('token', data.token);
-        navigate('/stars');
-      }
-      : (data) => setMessage(data.message);
     try {
-      const { data } = await axios.post(endpoint, { username, password });
-      handleResponse(data);
+      const { data } = await axios.post(
+        `/api/auth/${isLogin ? 'login' : 'register'}`,
+        { username, password }
+      )
+      if (isLogin) {
+        localStorage.setItem('token', data.token)
+        navigate('/stars');
+      } else {
+        setMessage(data.message)
+      }
     } catch (error) {
-      setError(error.message);
+      setError(error?.response?.data?.message ||
+        'An error occured. Please try again.')
     }
   };
 
