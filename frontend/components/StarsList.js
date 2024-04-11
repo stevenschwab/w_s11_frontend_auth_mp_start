@@ -20,7 +20,7 @@ export default function StarsList() {
         try {
           const response = await axios.get(
             '/api/stars',
-            { headers: { Authorization: token }}
+            { headers: { Authorization: token } }
           )
           setStars(response.data)
         } catch (error) {
